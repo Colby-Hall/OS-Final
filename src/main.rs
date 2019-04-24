@@ -20,15 +20,15 @@ fn main() {
 
     let now = Instant::now();
 
-    //matrix_mult(&matrix_one, &matrix_two, dimensions);
-/*
+    matrix_mult(&matrix_one, &matrix_two, dimensions);
+
     let elapsed_time = now.elapsed();
     let comp_time =
         elapsed_time.as_secs() as f64 + (elapsed_time.subsec_nanos() as f64) / 1000_000_000.0;
 
     println!("Multiplication time (seconds) {}", comp_time);
 	
-	*/
+	
 
     let now = Instant::now();
 
