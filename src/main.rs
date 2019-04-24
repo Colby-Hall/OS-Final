@@ -27,8 +27,6 @@ fn main() {
         elapsed_time.as_secs() as f64 + (elapsed_time.subsec_nanos() as f64) / 1000_000_000.0;
 
     println!("Multiplication time (seconds) {}", comp_time);
-	
-	
 
     let now = Instant::now();
 
@@ -64,13 +62,12 @@ fn matrix_mult(matrix_one: &Vec<Vec<usize>>, matrix_two: &Vec<Vec<usize>>, size:
             result_matrix[i][j] = prod;
         }
     }
-	//println!("{}", result_matrix[0][0]);
+    //println!("{}", result_matrix[0][0]);
     /*
     for x in result_matrix.iter() {
         println!("{:?}", x);
     }
-	*/
-    
+    */
 }
 
 fn thread_spawn_and_mult(
@@ -103,9 +100,7 @@ fn thread_spawn_and_mult(
     for x in arc_results.lock().unwrap().iter() {
         println!("{:?}", x);
     }
-	*/
-    
-    
+    */
 }
 fn multithreaded_mult(
     matrix_one: Vec<Vec<usize>>,
