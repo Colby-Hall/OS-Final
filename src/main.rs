@@ -22,27 +22,26 @@ fn main() {
 
     matrix_mult(&matrix_one, &matrix_two, dimensions);
 
-    let elapsed_time = now.elapsed();
-    let comp_time =
-        elapsed_time.as_secs() as f64 + (elapsed_time.subsec_nanos() as f64) / 1000_000_000.0;
+    let st_time = computation_time(now);
 
-    println!("Multiplication time (seconds) {}", comp_time);
+    println!("Multiplication time (seconds) {}", st_time);
 
-    let now = Instant::now();
+    let no2 = Instant::now();
 
     thread_spawn_and_mult(matrix_one, matrix_two, dimensions, threads);
 
-    let elapsed_time = now.elapsed();
-    let comp_time =
-        elapsed_time.as_secs() as f64 + (elapsed_time.subsec_nanos() as f64) / 1000_000_000.0;
-    println!("Multiplication time multithreaded (seconds) {}", comp_time);
+    let mt_time = computation_time(no2);
+
+    println!("Multiplication time multithreaded (seconds) {}", mt_time);
+
+    //assert_eq!(st_result, mt_result);
 }
 
 fn computation_time(now: Instant) -> f64 {
     let elapsed_time = now.elapsed();
-    let comp_time = elapsed_time.as_secs() as f64 + elapsed_time.subsec_nanos() as f64 / 100_000_000.0;
+    let comp_time =
+        elapsed_time.as_secs() as f64 + (elapsed_time.subsec_nanos() as f64) / 1000_000_000.0;
     return comp_time;
-
 }
 
 fn matrix_init(dimension: usize) -> Vec<Vec<usize>> {
