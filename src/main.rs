@@ -38,6 +38,13 @@ fn main() {
     println!("Multiplication time multithreaded (seconds) {}", comp_time);
 }
 
+fn computation_time(now: Instant) -> f64 {
+    let elapsed_time = now.elapsed();
+    let comp_time = elapsed_time.as_secs() as f64 + elapsed_time.subsec_nanos() as f64 / 100_000_000.0;
+    return comp_time;
+
+}
+
 fn matrix_init(dimension: usize) -> Vec<Vec<usize>> {
     let mat = matrix_builder::Matrix {
         row_number: dimension,
