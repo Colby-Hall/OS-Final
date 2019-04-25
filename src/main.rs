@@ -6,18 +6,22 @@ use std::time::Instant;
 mod matrix_builder;
 
 fn main() {
+    let dimensions = user_input();
+    let thread_number = 4;
+
+    multiplication_test(dimensions, thread_number);
+
+    //assert_eq!(st_result, mt_result);
+}
+
+fn user_input() -> usize {
     println!("Input one number for the nxn matrix.");
 
     let mut input = String::new();
 
     io::stdin().read_line(&mut input).expect("Oops");
 
-    let dimensions = input.trim().parse::<usize>().unwrap();
-    let thread_number = 4;
-
-    multiplication_test(dimensions, thread_number);
-
-    //assert_eq!(st_result, mt_result);
+    return input.trim().parse::<usize>().unwrap();
 }
 
 fn computation_time(now: Instant) -> f64 {
