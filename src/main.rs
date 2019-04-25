@@ -6,6 +6,8 @@ use std::time::Instant;
 mod matrix_builder;
 
 fn main() {
+    
+
     let dimensions = user_input();
     let thread_number = 4;
 
@@ -22,6 +24,9 @@ fn user_input() -> usize {
     io::stdin().read_line(&mut input).expect("Oops");
 
     return input.trim().parse::<usize>().unwrap();
+
+    
+
 }
 
 fn computation_time(now: Instant) -> f64 {
@@ -67,7 +72,7 @@ fn thread_spawn_and_mult(
     matrix_one: Vec<Vec<usize>>,
     matrix_two: Vec<Vec<usize>>,
     size: usize,
-    max_threads: u32,
+    max_threads: usize,
 ) {
     let result_matrix = vec![vec![0usize; size]; size];
 
@@ -83,7 +88,7 @@ fn thread_spawn_and_mult(
         //println!("{}", thread_count);
 
         handles.push(thread::spawn(move || {
-            multithreaded_mult(clonem1, clonem2, clonem3, size, thread_count);
+            multithreaded_mult(clonem1, clonem2, clonem3, size, thread_count, max_threads);
         }));
     }
     for handle in handles {
@@ -101,9 +106,10 @@ fn multithreaded_mult(
     result_matrix: std::sync::Arc<std::sync::Mutex<std::vec::Vec<std::vec::Vec<usize>>>>,
     size: usize,
     start_pos: usize,
+    max_threads: usize
 ) {
     //println!("{}", start_pos);
-    for i in (start_pos * size / 4)..(start_pos + 1) * size / 4 {
+    for i in (start_pos * size / max_threads)..(start_pos + 1) * size / max_threads {
         for j in 0..size {
             let mut prod = 0;
             for k in 0..size {
@@ -117,7 +123,7 @@ fn multithreaded_mult(
     }
 }
 
-fn multiplication_test(dimensions: usize, thread_number: u32) {
+fn multiplication_test(dimensions: usize, thread_number: usize) {
     let matrix_one = matrix_init(dimensions);
     let matrix_two = matrix_init(dimensions);
 
