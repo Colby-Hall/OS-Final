@@ -1,11 +1,9 @@
 use rand::distributions::{Distribution, Uniform};
 
-
 pub struct Matrix {
     pub row_number: usize,
     pub column_number: usize,
 }
-
 
 impl Matrix {
     pub fn fill_matrix(self) -> Vec<Vec<usize>> {
@@ -28,10 +26,8 @@ impl Matrix {
 
         }
         */
-        
-        
 
-        println!("-----");
+        //println!("-----");
         return two_d_array;
     }
 }

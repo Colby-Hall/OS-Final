@@ -13,26 +13,9 @@ fn main() {
     io::stdin().read_line(&mut input).expect("Oops");
 
     let dimensions = input.trim().parse::<usize>().unwrap();
-    let threads = 4;
+    let thread_number = 4;
 
-    let matrix_one = matrix_init(dimensions);
-    let matrix_two = matrix_init(dimensions);
-
-    let now = Instant::now();
-
-    matrix_mult(&matrix_one, &matrix_two, dimensions);
-
-    let st_time = computation_time(now);
-
-    println!("Multiplication time (seconds) {}", st_time);
-
-    let no2 = Instant::now();
-
-    thread_spawn_and_mult(matrix_one, matrix_two, dimensions, threads);
-
-    let mt_time = computation_time(no2);
-
-    println!("Multiplication time multithreaded (seconds) {}", mt_time);
+    multiplication_test(dimensions, thread_number);
 
     //assert_eq!(st_result, mt_result);
 }
@@ -93,7 +76,7 @@ fn thread_spawn_and_mult(
         let clonem2 = matrix_two.clone();
         let clonem3 = arc_results.clone();
         let thread_count = handles.len();
-        println!("{}", thread_count);
+        //println!("{}", thread_count);
 
         handles.push(thread::spawn(move || {
             multithreaded_mult(clonem1, clonem2, clonem3, size, thread_count);
@@ -128,4 +111,25 @@ fn multithreaded_mult(
             result_matrix.lock().unwrap()[i][j] = prod;
         }
     }
+}
+
+fn multiplication_test(dimensions: usize, thread_number: u32) {
+    let matrix_one = matrix_init(dimensions);
+    let matrix_two = matrix_init(dimensions);
+
+    let now = Instant::now();
+
+    matrix_mult(&matrix_one, &matrix_two, dimensions);
+
+    let st_time = computation_time(now);
+
+    println!("Multiplication time (seconds) {}", st_time);
+
+    let no2 = Instant::now();
+
+    thread_spawn_and_mult(matrix_one, matrix_two, dimensions, thread_number);
+
+    let mt_time = computation_time(no2);
+
+    println!("Multiplication time multithreaded (seconds) {}", mt_time);
 }
