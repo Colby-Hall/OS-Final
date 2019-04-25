@@ -6,12 +6,25 @@ use std::time::Instant;
 mod matrix_builder;
 
 fn main() {
-    
-
     let dimensions = user_input();
     let thread_number = 4;
+    let runs = 100;
 
-    multiplication_test(dimensions, thread_number);
+    let mut st_times_vec = vec![0f64; 0];
+    let mut mt_times_vec = vec![0f64; 0];
+
+    for _ in 0..runs {
+        multiplication_test(
+            dimensions,
+            thread_number,
+            &mut st_times_vec,
+            &mut mt_times_vec,
+        );
+    }
+
+    for e in &st_times_vec {
+        println!("{}", e);
+    }
 
     //assert_eq!(st_result, mt_result);
 }
@@ -24,16 +37,13 @@ fn user_input() -> usize {
     io::stdin().read_line(&mut input).expect("Oops");
 
     return input.trim().parse::<usize>().unwrap();
-
-    
-
 }
 
-fn computation_time(now: Instant) -> f64 {
+fn computation_time(now: Instant, time_vec: &mut Vec<f64>) {
     let elapsed_time = now.elapsed();
     let comp_time =
         elapsed_time.as_secs() as f64 + (elapsed_time.subsec_nanos() as f64) / 1000_000_000.0;
-    return comp_time;
+    time_vec.push(comp_time);
 }
 
 fn matrix_init(dimension: usize) -> Vec<Vec<usize>> {
@@ -106,7 +116,7 @@ fn multithreaded_mult(
     result_matrix: std::sync::Arc<std::sync::Mutex<std::vec::Vec<std::vec::Vec<usize>>>>,
     size: usize,
     start_pos: usize,
-    max_threads: usize
+    max_threads: usize,
 ) {
     //println!("{}", start_pos);
     for i in (start_pos * size / max_threads)..(start_pos + 1) * size / max_threads {
@@ -123,7 +133,12 @@ fn multithreaded_mult(
     }
 }
 
-fn multiplication_test(dimensions: usize, thread_number: usize) {
+fn multiplication_test(
+    dimensions: usize,
+    thread_number: usize,
+    st_vec: &mut Vec<f64>,
+    mt_vec: &mut Vec<f64>,
+) {
     let matrix_one = matrix_init(dimensions);
     let matrix_two = matrix_init(dimensions);
 
@@ -131,15 +146,15 @@ fn multiplication_test(dimensions: usize, thread_number: usize) {
 
     matrix_mult(&matrix_one, &matrix_two, dimensions);
 
-    let st_time = computation_time(now);
+    computation_time(now, st_vec);
 
-    println!("Multiplication time (seconds) {}", st_time);
+    //println!("Multiplication time (seconds) {}", st_time);
 
     let no2 = Instant::now();
 
     thread_spawn_and_mult(matrix_one, matrix_two, dimensions, thread_number);
 
-    let mt_time = computation_time(no2);
+    computation_time(no2, mt_vec);
 
-    println!("Multiplication time multithreaded (seconds) {}", mt_time);
+    //println!("Multiplication time multithreaded (seconds) {}", mt_time);
 }
