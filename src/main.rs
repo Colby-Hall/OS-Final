@@ -104,7 +104,14 @@ fn thread_spawn_and_mult(
         //println!("{}", thread_count);
 
         handles.push(thread::spawn(move || {
-            multithreaded_mult(&clonem1, &clonem2, &clonem3, size, thread_count, max_threads);
+            multithreaded_mult(
+                &clonem1,
+                &clonem2,
+                &clonem3,
+                size,
+                thread_count,
+                max_threads,
+            );
         }));
     }
     for handle in handles {
