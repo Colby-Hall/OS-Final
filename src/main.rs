@@ -7,8 +7,8 @@ mod matrix_builder;
 
 fn main() {
     let dimensions = user_input();
-    let thread_number = 4;
-    let runs = 100;
+    let thread_number = 10;
+    let runs = 1;
 
     let mut st_times_vec = vec![0f64; 0];
     let mut mt_times_vec = vec![0f64; 0];
@@ -26,11 +26,17 @@ fn main() {
         println!("{}", e);
     }
 
+    println!("-----");
+
+    for e in &mt_times_vec {
+        println!("{}", e);
+    }
+
     //assert_eq!(st_result, mt_result);
 }
 
 fn user_input() -> usize {
-    println!("Input one number for the nxn matrix.");
+    println!("Input one number for the NxN matrix.");
 
     let mut input = String::new();
 
@@ -98,7 +104,7 @@ fn thread_spawn_and_mult(
         //println!("{}", thread_count);
 
         handles.push(thread::spawn(move || {
-            multithreaded_mult(clonem1, clonem2, clonem3, size, thread_count, max_threads);
+            multithreaded_mult(&clonem1, &clonem2, &clonem3, size, thread_count, max_threads);
         }));
     }
     for handle in handles {
@@ -111,9 +117,9 @@ fn thread_spawn_and_mult(
     */
 }
 fn multithreaded_mult(
-    matrix_one: Vec<Vec<usize>>,
-    matrix_two: Vec<Vec<usize>>,
-    result_matrix: std::sync::Arc<std::sync::Mutex<std::vec::Vec<std::vec::Vec<usize>>>>,
+    matrix_one: &Vec<Vec<usize>>,
+    matrix_two: &Vec<Vec<usize>>,
+    result_matrix: &std::sync::Arc<std::sync::Mutex<std::vec::Vec<std::vec::Vec<usize>>>>,
     size: usize,
     start_pos: usize,
     max_threads: usize,
